@@ -19,4 +19,10 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="BattleField.axaml.cs">
+      <DependentUpon>BattleField.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
