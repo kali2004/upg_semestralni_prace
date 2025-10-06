@@ -1,22 +1,23 @@
-Tento projekt tvoøí kostru semestrální práce KIV/UPG 2025/2026 a je vyuitelnı zejména pro studenty, kteøí se rozhodnou semestrální práci vypracovat v C# s vyuitím Avalonia UI a SkiaSharp. 
-Projekt je k dispozici ke staení na https://gitlab.kiv.zcu.cz/UPG/dronewar.git. 
+Tento projekt tvoÅ™Ã­ kostru semestrÃ¡lnÃ­ prÃ¡ce KIV/UPG 2025/2026 a je k dispozici ke staÅ¾enÃ­ na https://gitlab.kiv.zcu.cz/UPG/dronewar.git. 
 
-*UPOZORNÌNÍ:* Pøed odevzdáním (na https://portal.zcu.cz/portal/studium/moje-vyuka/odevzdavani-praci.html) odstraòte všechny soubory, které nejsou pro odevzdávanou práci relevantní, tj. napø. pokud pro dokumentaci jste šablonu dokumentace.dot nevyuili, ale vyuili jste pouze dokumentace.docx, ponechte soubor .docx; analogicky, pokud Vaše práce má bıt spuštìna pod Windows, ponechte skripty Run.cmd a Build.cmd, pokud pod Linux/Mac, ponechte skripty Run.sh a Build.sh, oba skripty ponechte, pokud práci lze spouštìt jak na Windows tak na Linux/Mac.
+Projekt je plnÄ› vyuÅ¾itelnÃ½ pro studenty, kteÅ™Ã­ se rozhodnou semestrÃ¡lnÃ­ prÃ¡ci vypracovat v C#, a to s vyuÅ¾itÃ­m Avalonia UI (a SkiaSharp) nebo WinForms. Tito studenti jednoduÅ¡e pÅ™ejmenujÃ­ src/DroneWar_Avalonia nebo src/DroneWar_WinForms na src/DroneWar a druhÃ½ adresÃ¡Å™ zcela smaÅ¾ou. OstatnÃ­ studenti z projektu vyuÅ¾ijÃ­ pouze data a pÅ™Ã­p. instrukce k dokumentaci.
 
-*UPOZORNÌNÍ:* Kostra se v prùbìhu semestru mùe zmìnit. Studentùm je proto doporuèeno, aby pro svou práci vyuili verzovací systém Git, a to tak, e mají dva vzdálené repozitáøe: vlastní origin pro FETCH/PULL/PUSH, zaloenı napø. na github / gitlab, a upstream pro FETCH/PULL vedoucí na pùvodní zdroj a na vızvu pøednášejícího/cvièícího provedli FETCH/PULL z upstream.
+*UPOZORNÄšNÃ:* PÅ™ed odevzdÃ¡nÃ­m (na https://portal.zcu.cz/portal/studium/moje-vyuka/odevzdavani-praci.html) odstraÅˆte vÅ¡echny soubory, kterÃ© nejsou pro odevzdÃ¡vanou prÃ¡ci relevantnÃ­, tj. napÅ™. pokud pro dokumentaci jste Å¡ablonu dokumentace.dot nevyuÅ¾ili, ale vyuÅ¾ili jste pouze dokumentace.docx, ponechte soubor .docx; analogicky, pokud VaÅ¡e prÃ¡ce mÃ¡ bÃ½t spuÅ¡tÄ›na pod Windows, ponechte skripty Run.cmd a Build.cmd, pokud pod Linux/Mac, ponechte skripty Run.sh a Build.sh, oba skripty ponechte, pokud prÃ¡ci lze spouÅ¡tÄ›t jak na Windows tak na Linux/Mac.
+
+*UPOZORNÄšNÃ:* Kostra se v prÅ¯bÄ›hu semestru mÅ¯Å¾e zmÄ›nit. StudentÅ¯m je proto doporuÄeno, aby pro svou prÃ¡ci vyuÅ¾ili verzovacÃ­ systÃ©m Git, a to tak, Å¾e majÃ­ dva vzdÃ¡lenÃ© repozitÃ¡Å™e: vlastnÃ­ origin pro FETCH/PULL/PUSH, zaloÅ¾enÃ½ napÅ™. na github / gitlab, a upstream pro FETCH/PULL vedoucÃ­ na pÅ¯vodnÃ­ zdroj a na vÃ½zvu pÅ™ednÃ¡Å¡ejÃ­cÃ­ho/cviÄÃ­cÃ­ho provedli FETCH/PULL z upstream.
 
 
 
-Návod pro pouití s GIT pro úplné zaèáteèníky
+NÃ¡vod pro pouÅ¾itÃ­ s GIT pro ÃºplnÃ© zaÄÃ¡teÄnÃ­ky
 ---------------------------------------------
-1. Pokud ji máte zøízen nìkde GIT úèet umoòující vám zakládat soukromé (private) repozitáøe, jdìte na krok 3
-2. Zalote si úèet na https://gitlab.com/ nebo https://bitbucket.org nebo https://github.com. 
-3. Zalote novı SOUKROMİ (private) repozitáø a nìjak vhodnì si ho pojmenujte. Rady, a zaloíte .gitignore nebo soubor readme, ignorujte - vy ji máte svùj existující projekt.
-4. Získejte HTTPS adresu k vašemu repozitáøi (bıvá zøetelnì uvedena).
-5. Pokud jste tento projekt získali doporuèenım klonováním z Git (máte zde skrytı podadresáø .git), jdìte na krok 8.
-6. Prostøednictvím TortoiseGit (vyvolá se z kontextového menu v prùzkumníkovi) nebo Git Extensions (èi jinıch) zalote lokální repozitáø v tomto adresáøi (Git Create repository here ...). Od této chvíle mùete provádìt "commit" a uchovávat lokálnì zmìny.
-7. Vyvolejte Git Commit a všechny soubory "commitujte" do lokálního repozitáøe (poèáteèní/první commit).
-8. Vyvolejte Push a v nastavení "Remote" pøidejte novı vzdálenı repozitáø s názvem "origin" a jako URL volte tu, kterou jste získali v kroku 4 (tj. HTTPS adresu k vašemu repozitáøi). Dokonèete Push. TortoiseGit si bìhem toho vyádá vaše pøihlašovací údaje a všechny vaše zmìny (lokálnì vedené v podadresáøi .git) zkopíruje do vzdáleného repozitáøe.
-8. Zkontrolujte, e data jsou skuteènì uloena.
+1. Pokud jiÅ¾ mÃ¡te zÅ™Ã­zen nÄ›kde GIT ÃºÄet umoÅ¾ÅˆujÃ­cÃ­ vÃ¡m zaklÃ¡dat soukromÃ© (private) repozitÃ¡Å™e, jdÄ›te na krok 3
+2. ZaloÅ¾te si ÃºÄet na https://gitlab.com/ nebo https://bitbucket.org nebo https://github.com. 
+3. ZaloÅ¾te novÃ½ SOUKROMÃ (private) repozitÃ¡Å™ a nÄ›jak vhodnÄ› si ho pojmenujte. Rady, aÅ¥ zaloÅ¾Ã­te .gitignore nebo soubor readme, ignorujte - vy jiÅ¾ mÃ¡te svÅ¯j existujÃ­cÃ­ projekt.
+4. ZÃ­skejte HTTPS adresu k vaÅ¡emu repozitÃ¡Å™i (bÃ½vÃ¡ zÅ™etelnÄ› uvedena).
+5. Pokud jste tento projekt zÃ­skali doporuÄenÃ½m klonovÃ¡nÃ­m z Git (mÃ¡te zde skrytÃ½ podadresÃ¡Å™ .git), jdÄ›te na krok 8.
+6. ProstÅ™ednictvÃ­m TortoiseGit (vyvolÃ¡ se z kontextovÃ©ho menu v prÅ¯zkumnÃ­kovi) nebo Git Extensions (Äi jinÃ½ch) zaloÅ¾te lokÃ¡lnÃ­ repozitÃ¡Å™ v tomto adresÃ¡Å™i (Git Create repository here ...). Od tÃ©to chvÃ­le mÅ¯Å¾ete provÃ¡dÄ›t "commit" a uchovÃ¡vat lokÃ¡lnÄ› zmÄ›ny.
+7. Vyvolejte Git Commit a vÅ¡echny soubory "commitujte" do lokÃ¡lnÃ­ho repozitÃ¡Å™e (poÄÃ¡teÄnÃ­/prvnÃ­ commit).
+8. Vyvolejte Push a v nastavenÃ­ "Remote" pÅ™idejte novÃ½ vzdÃ¡lenÃ½ repozitÃ¡Å™ s nÃ¡zvem "origin" a jako URL volte tu, kterou jste zÃ­skali v kroku 4 (tj. HTTPS adresu k vaÅ¡emu repozitÃ¡Å™i). DokonÄete Push. TortoiseGit si bÄ›hem toho vyÅ¾Ã¡dÃ¡ vaÅ¡e pÅ™ihlaÅ¡ovacÃ­ Ãºdaje a vÅ¡echny vaÅ¡e zmÄ›ny (lokÃ¡lnÄ› vedenÃ© v podadresÃ¡Å™i .git) zkopÃ­ruje do vzdÃ¡lenÃ©ho repozitÃ¡Å™e.
+8. Zkontrolujte, Å¾e data jsou skuteÄnÄ› uloÅ¾ena.
 
-Poznámka: vyuijte soubor .gitignore pro specifikaci automaticky generovanıch souborù (.class, javadoc dokumentace, apod.), aby se tyto soubory neukládaly do Git repozitáøù.
+PoznÃ¡mka: vyuÅ¾ijte soubor .gitignore pro specifikaci automaticky generovanÃ½ch souborÅ¯ (.class, javadoc dokumentace, apod.), aby se tyto soubory neuklÃ¡daly do Git repozitÃ¡Å™Å¯.

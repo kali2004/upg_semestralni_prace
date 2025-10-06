@@ -1,1 +1,1 @@
-.\bin\ElectricFieldVis.exe %*
+.\bin\DroneWar.exe %*

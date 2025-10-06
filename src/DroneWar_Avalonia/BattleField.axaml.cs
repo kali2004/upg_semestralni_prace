@@ -23,6 +23,8 @@ public partial class BattleField: UserControl
         context.Custom(new SKBattleField(rect));
     }
 
+    //TODO: Pokud nebudete pouzivat Skia, ale budete pouzivat primo Avalonii, celou tuto tridu odstrante
+    //a pracujte s metodou Render(DrawingContext context)
     private sealed class SKBattleField : ICustomDrawOperation
     {
         public Rect Bounds { get; }

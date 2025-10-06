@@ -1,2 +1,2 @@
 #!/bin/bash
-mono ./bin/ElectricFieldVis.exe  $@
+mono ./bin/DroneWar.exe  $@
