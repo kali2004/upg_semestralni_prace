@@ -9,5 +9,10 @@ namespace UPG_SP_2024
         {
             InitializeComponent();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
