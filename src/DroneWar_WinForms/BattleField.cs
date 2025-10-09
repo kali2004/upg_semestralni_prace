@@ -12,12 +12,27 @@ namespace UPG_SP_2024
     {
         /// <summary>Initializes a new instance of the <see cref="BattleField" /> class.</summary>
         ScenarioData data;
-
+        int min = 0, max = 0;
+        Bitmap terrainBitmap;
         public BattleField()
         {
             this.ClientSize = new System.Drawing.Size(800, 600);
             data = LoadScenario(0);
-            Console.WriteLine(data.W);
+
+            for (int i = 0;i < data.W; i++)
+            {
+                for (int j = 0; j < data.H; j++)
+                {
+                    if(data.TerrainHeights[j,i] < min) min = data.TerrainHeights[j,i];
+                    if(data.TerrainHeights[j,i] > max) max = data.TerrainHeights[j,i];
+                }
+            }
+
+            GenerateTerrainBitmap();
+
+            //where to move the terrain
+            int x = 0;
+            int y = 0;
         }
 
 
@@ -34,15 +49,10 @@ namespace UPG_SP_2024
 
             Font f = new Font("Arial", 24, FontStyle.Bold);
 
-            for (int i = 0; i < data.W; i++)
-            {
-                for(int j = 0; j < data.H; j++)
-                {
-                    Console.Write("hello");
-                }
-            }
+            g.DrawImage(terrainBitmap, 0,0);
 
-            g.DrawString((data.W).ToString(), f, Brushes.Black, 0,0);
+            g.DrawString((min).ToString(), f, Brushes.Black, 0,0);
+            g.DrawString((max).ToString(), f, Brushes.Black, 0, 50);
 
             // Calling the base class OnPaint   
             base.OnPaint(e);
@@ -77,10 +87,70 @@ namespace UPG_SP_2024
             return BitConverter.ToInt32(data, 0);
         }
 
+        private Color GetTerrainColor(int altitude)
+        {
+            if (max == min) return Color.Gray;
+
+            // 1. Normalizace výšky do rozsahu 0.0 až 1.0
+            double normalized = (double)(altitude - min) / (max - min);
+
+            // 2. Mapování do barevného gradientu (Zelená -> Hnědá -> Bílá)
+
+            if (normalized < 0.5)
+            {
+                // Spodní polovina (Nízké výšky): Zelená k Žluté/Hnědé
+                int r = (int)(normalized * 2 * 255); // Od 0 do ~128
+                int g = (int)(255 - normalized * 2 * 100); // Od 255 do ~55
+                int b = (int)(normalized * 2 * 255 * 0.1); // Od 0 do ~25
+                return Color.FromArgb(r, g, b);
+            }
+            else
+            {
+                // Horní polovina (Vysoké výšky): Žlutá/Hnědá k Bílé
+                double highNormalized = (normalized - 0.5) * 2; // Rozsah 0.0 až 1.0 pro vysokou část
+                int component = (int)(128 + highNormalized * 127); // Od 128 do 255
+                return Color.FromArgb(component, component, component);
+            }
+        }
+
+        // --- NOVÁ METODA: Vytvoření Mapy do Bitmapy ---
+        private void GenerateTerrainBitmap()
+        {
+            // Ujistíme se, že máme data a můžeme pracovat s rozměry
+            if (data == null) return;
+
+            int W = data.W; // Šířka mapy v buňkách/pixelech
+            int H = data.H; // Výška mapy v buňkách/pixelech
+
+            // Krok A: Uvolnění staré bitmapy, pokud existuje
+            if (terrainBitmap != null)
+            {
+                terrainBitmap.Dispose();
+            }
+
+            // Krok B: Vytvoření nové instance Bitmapy
+            // Rozměry Bitmapy budou přesně shodné s rozměry datové matice
+            terrainBitmap = new Bitmap(W, H);
+
+            // Nyní můžete pokračovat nastavením pixelů pomocí for cyklů a metody SetPixel.
+
+            for (int y = 0; y < H; y++)
+            {
+                for (int x = 0; x < W; x++)
+                {
+                    int altitude = data.TerrainHeights[y, x];
+                    Color terrainColor = GetTerrainColor(altitude);
+
+                    // Krok C: Nastavení barvy pixelu (x, y)
+                    terrainBitmap.SetPixel(x, y, terrainColor);
+                }
+            }
+        }
+
         public ScenarioData LoadScenario(int id)
         {
             // Změna koncovky souboru na .ter
-            string filePath = $"D:\\skola\\upg\\semestralni_prace\\dronewar\\data\\0.ter";
+            string filePath = $"D:\\skola\\upg\\semestralni_prace\\dronewar\\data\\2.ter";
             ScenarioData data = new ScenarioData();
 
             try
