@@ -38,7 +38,7 @@ namespace UPG_SP_2024
             {
                 for(int j = 0; j < data.H; j++)
                 {
-                    
+                    Console.Write("hello");
                 }
             }
 
