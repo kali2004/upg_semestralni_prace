@@ -38,20 +38,22 @@ namespace UPG_SP_2024
             // 
             battleField1.Dock = DockStyle.Fill;
             battleField1.Location = new Point(0, 0);
+            battleField1.Margin = new Padding(2, 2, 2, 2);
             battleField1.Name = "battleField1";
-            battleField1.Size = new Size(774, 529);
+            battleField1.Size = new Size(782, 553);
             battleField1.TabIndex = 0;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(774, 529);
+            ClientSize = new Size(782, 553);
             Controls.Add(battleField1);
-            Margin = new Padding(6);
+            Margin = new Padding(4, 4, 4, 4);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "<Osobní číslo> - Semestrální práce KIV/UPG 2025/2026";
+            Text = "<A24B0234P> - Semestrální práce KIV/UPG 2025/2026";
+            Load += MainForm_Load;
             ResumeLayout(false);
         }
 
