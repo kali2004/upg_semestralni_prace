@@ -40,7 +40,7 @@ namespace UPG_SP_2024
 
             simulationTimer = new System.Windows.Forms.Timer();
             simulationTimer.Interval = (int)(TimeStep * 1000); // 10 milisekund
-            simulationTimer.Tick += SimulationTimer_Tick; // Připojení obslužné metody
+            //simulationTimer.Tick += SimulationTimer_Tick; // Připojení obslužné metody
 
             data = LoadScenario(0);
 
@@ -109,7 +109,7 @@ namespace UPG_SP_2024
             base.OnResize(eventargs);
         }
 
-        private void SimulationTimer_Tick(object sender, EventArgs e)
+        /*private void SimulationTimer_Tick(object sender, EventArgs e)
         {
             if (currentProjectileState == null) return;
 
@@ -130,7 +130,7 @@ namespace UPG_SP_2024
 
             // 4. Překreslení scény s novou pozicí
             this.Invalidate();
-        }
+        }*/
 
         private int ReadInt32EndianSafe(BinaryReader br)
         {
