@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
+
 
 namespace UPG_SP_2024
 {
@@ -14,9 +19,29 @@ namespace UPG_SP_2024
         ScenarioData data;
         int min = 0, max = 0;
         Bitmap terrainBitmap;
+
+        int panelWidth;
+        int panelHeight;
+
+        //where to move the terrain
+        int x = 0;
+        int y = 0;
+        float scale = 1.0f;
+
+        Drone drone;
+
+
+        private readonly System.Windows.Forms.Timer simulationTimer;
+        private const double TimeStep = 0.01; // Časový krok Delta T = 10 ms
+
         public BattleField()
         {
             this.ClientSize = new System.Drawing.Size(800, 600);
+
+            simulationTimer = new System.Windows.Forms.Timer();
+            simulationTimer.Interval = (int)(TimeStep * 1000); // 10 milisekund
+            simulationTimer.Tick += SimulationTimer_Tick; // Připojení obslužné metody
+
             data = LoadScenario(0);
 
             for (int i = 0;i < data.W; i++)
@@ -30,9 +55,10 @@ namespace UPG_SP_2024
 
             GenerateTerrainBitmap();
 
-            //where to move the terrain
-            int x = 0;
-            int y = 0;
+            panelWidth = this.ClientSize.Width;
+            panelHeight = this.ClientSize.Height;
+
+            drone = new Drone(data.XT, data.YT);
         }
 
 
@@ -41,18 +67,32 @@ namespace UPG_SP_2024
         /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs">PaintEventArgs</see> that contains the event data.</param>
         protected override void OnPaint(PaintEventArgs e)
         {
+
+            if (data == null || terrainBitmap == null) return;
             Graphics g = e.Graphics;
+
+            panelWidth = this.ClientSize.Width;
+            panelHeight = this.ClientSize.Height;
+
+            float scaleX = (float)panelWidth / data.W;
+            float scaleY = (float)panelHeight / data.H;
+            scale = (float)Math.Max(scaleX, scaleY);
 
             //TODO: Add custom paint code here
 
-            g.FillEllipse(Brushes.Red, this.Width / 2, this.Height / 4, 100, 100);
-
             Font f = new Font("Arial", 24, FontStyle.Bold);
 
-            g.DrawImage(terrainBitmap, 0,0);
+            g.DrawImage(terrainBitmap, 0,0,(float)data.W*scale, (float)data.H * scale);
 
-            g.DrawString((min).ToString(), f, Brushes.Black, 0,0);
-            g.DrawString((max).ToString(), f, Brushes.Black, 0, 50);
+            g.DrawString((data.XT).ToString(), f, Brushes.Black, 0,0);
+            g.DrawString((data.YT).ToString(), f, Brushes.Black, 0, 50);
+
+            Rectangle canon = new Rectangle((int)(data.XS * scale)-10, (int)(data.YS * scale)-10, 20, 20);
+            
+
+            g.FillEllipse(Brushes.Black, canon);
+
+            drone.drawDrone(g);
 
             // Calling the base class OnPaint   
             base.OnPaint(e);
@@ -69,7 +109,28 @@ namespace UPG_SP_2024
             base.OnResize(eventargs);
         }
 
-      
+        private void SimulationTimer_Tick(object sender, EventArgs e)
+        {
+            if (currentProjectileState == null) return;
+
+            // 2. Provedeme jeden simulační krok
+            // ZDE BUDE: currentProjectileState = IntegrateRK4(currentProjectileState, TimeStep);
+
+            // Dočasná ukázka pohybu (pouze gravitace)
+            currentProjectileState.Vz -= 9.81 * TimeStep; // Změna rychlosti
+            currentProjectileState.Z += currentProjectileState.Vz * TimeStep; // Změna pozice
+            currentProjectileState.Time += TimeStep;
+
+            // 3. Kontrola zastavení (např. dopad na zem)
+            if (currentProjectileState.Z < 0)
+            {
+                simulationTimer.Stop();
+                currentProjectileState.Z = 0;
+            }
+
+            // 4. Překreslení scény s novou pozicí
+            this.Invalidate();
+        }
 
         private int ReadInt32EndianSafe(BinaryReader br)
         {
@@ -112,6 +173,7 @@ namespace UPG_SP_2024
                 return Color.FromArgb(component, component, component);
             }
         }
+
 
         // --- NOVÁ METODA: Vytvoření Mapy do Bitmapy ---
         private void GenerateTerrainBitmap()
@@ -199,6 +261,29 @@ namespace UPG_SP_2024
         }
     }
 
+    public class Drone
+    {
+        int x;
+        int y;
+
+        public Drone(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void Move(int deltaX, int deltaY)
+        {
+            x += deltaX;
+            y += deltaY;
+        }
+
+        public void drawDrone(Graphics g)
+        {
+            Rectangle drone = new Rectangle(x - 10, y - 10, 20, 20);
+            g.FillRectangle(Brushes.Red, drone);
+        }
+    }
     public class ScenarioData
     {
         // --- 1. Hlavička Scénáře (15x Int32) ---
@@ -253,5 +338,33 @@ namespace UPG_SP_2024
         public int[,] TerrainHeights { get; set; }
     }
 
+    public class ProjectileState
+    {
+        // Pozice (metrů)
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
 
+        // Rychlost (metry za sekundu)
+        public double Vx { get; set; }
+        public double Vy { get; set; }
+        public double Vz { get; set; }
+
+        // Celkový čas simulace od startu
+        public double Time { get; set; }
+
+        /// <summary>
+        /// Inicializace stavu.
+        /// </summary>
+        public ProjectileState(double x, double y, double z, double vx, double vy, double vz, double time = 0.0)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            Vx = vx;
+            Vy = vy;
+            Vz = vz;
+            Time = time;
+        }
+    }
 }
